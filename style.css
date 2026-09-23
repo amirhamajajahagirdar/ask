@@ -1,131 +1,519 @@
-/* Global Reset and Background */
+/* =========================================
+   ASK — Modern Romantic UI
+   Works with the existing index.html
+   ========================================= */
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --lavender: #e4dee4;
+    --off-white: #f7f3f4;
+    --pink: #d98fa8;
+    --rose: #9e3f63;
+    --berry: #6b183a;
+    --sage: #dce8e1;
+    --dark: #211a1d;
+    --gray: #8e898c;
+}
+
+html,
 body {
-    background-color: #E4DEE4; /* Dusty Lavender */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
+
+    padding: 20px;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(217, 143, 168, 0.35),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(107, 24, 58, 0.12),
+            transparent 30%
+        ),
+        var(--lavender);
+
+    font-family:
+        "Segoe UI",
+        Tahoma,
+        Geneva,
+        Verdana,
+        sans-serif;
+
+    color: var(--dark);
+
+    overflow-x: hidden;
 }
 
-/* Main Card Container */
+/* =========================================
+   Main Card
+   ========================================= */
+
 .card-container {
-    background-color: #F7F3F4; /* Warm Off-White */
-    padding: 40px;
-    border-radius: 22px;
-    box-shadow: 0 10px 30px rgba(142, 137, 140, 0.3); /* Soft Gray shadow */
-    width: 90%;
-    max-width: 450px;
-    text-align: center;
     position: relative;
-    min-height: 300px;
+
+    width: min(100%, 470px);
+    min-height: 500px;
+
+    padding: 32px 24px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    text-align: center;
+
+    background: rgba(247, 243, 244, 0.94);
+
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 28px;
+
+    box-shadow:
+        0 25px 70px rgba(33, 26, 29, 0.18),
+        0 5px 20px rgba(107, 24, 58, 0.08);
+
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+
+    overflow: hidden;
+
+    animation: cardEnter 0.7s ease both;
 }
 
-/* Typography */
+@keyframes cardEnter {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================
+   Image
+   ========================================= */
+
+.img {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-bottom: 20px;
+}
+
+.img img {
+    width: min(180px, 55vw);
+    aspect-ratio: 1 / 1;
+
+    object-fit: cover;
+
+    border-radius: 24px;
+
+    border: 4px solid var(--sage);
+
+    box-shadow:
+        0 12px 30px rgba(107, 24, 58, 0.15);
+
+    animation: imageFloat 3s ease-in-out infinite;
+}
+
+@keyframes imageFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* =========================================
+   Typography
+   ========================================= */
+
 h1 {
-    color: #6B183A; /* Deep Berry */
-    font-size: 26px;
-    margin-bottom: 10px;
+    width: 100%;
+
+    margin: 8px 0 24px;
+
+    color: var(--berry);
+
+    font-size: clamp(24px, 6vw, 31px);
+    line-height: 1.2;
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
 }
 
 p {
-    color: #211A1D; /* Near Black */
+    margin: 8px 0 22px;
+
+    color: var(--dark);
+
     font-size: 16px;
-    margin-bottom: 25px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
-/* Profile Image */
-.profile-pic {
-    width: 120px;
-    height: 120px;
-    border-radius: 16px;
-    object-fit: cover;
-    margin-bottom: 20px;
-    border: 3px solid #DCE8E1; /* Soft Sage / Mint */
+/* =========================================
+   Button Containers
+   ========================================= */
+
+.scontainer {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    min-height: 65px;
 }
 
-/* Standard Buttons */
+.dateinput {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.food {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 14px;
+
+    margin-top: 8px;
+}
+
+/* =========================================
+   Buttons
+   ========================================= */
+
 button {
-    background-color: #D98FA8; /* Blush Pink */
-    color: #F7F3F4; /* Warm Off-White */
-    border: none;
-    padding: 12px 24px;
+    position: relative;
+
+    min-width: 110px;
+
+    padding: 13px 22px;
+
+    border: 2px solid var(--pink);
+    border-radius: 16px;
+
+    background: var(--pink);
+    color: var(--off-white);
+
+    font-family: inherit;
     font-size: 16px;
-    font-weight: bold;
-    border-radius: 25px;
+    font-weight: 700;
+
     cursor: pointer;
-    margin: 10px;
-    transition: background-color 0.3s ease;
+
+    box-shadow:
+        0 7px 18px rgba(158, 63, 99, 0.18);
+
+    transition:
+        transform 0.15s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 button:hover {
-    background-color: #9E3F63; /* Rose Accent */
+    background: var(--rose);
+    border-color: var(--rose);
+
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 11px 24px rgba(158, 63, 99, 0.28);
 }
 
-/* Runaway Button Specifics */
-#no-btn {
-    position: relative; 
-    transition: top 0.2s ease, left 0.2s ease; /* Smooth gliding */
+button:active {
+    transform: scale(0.92);
+
+    box-shadow:
+        0 3px 10px rgba(158, 63, 99, 0.18);
 }
 
-/* Inputs for Screen 3 */
-input[type="date"], input[type="time"] {
-    border: 2px solid #DCE8E1; /* Soft Sage / Mint */
-    background-color: #FFFFFF;
-    color: #211A1D;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 12px;
-    margin: 10px 5px;
-    font-family: inherit;
-    outline: none;
-    transition: border-color 0.3s ease;
+button:focus-visible,
+input:focus-visible {
+    outline: 3px solid rgba(217, 143, 168, 0.45);
+    outline-offset: 3px;
 }
 
-input[type="date"]:focus, input[type="time"]:focus {
-    border-color: #D98FA8; /* Blush Pink focus state */
+/* =========================================
+   Yes Button
+   ========================================= */
+
+#yesbtn {
+    background: var(--berry);
+    border-color: var(--berry);
 }
 
-/* Food Grid Layout */
-.food-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 20px;
+#yesbtn:hover {
+    background: var(--rose);
+    border-color: var(--rose);
+}
+
+/* =========================================
+   No Button
+   ========================================= */
+
+#nobtn {
+    background: transparent;
+    color: var(--berry);
+
+    border-color: var(--berry);
+
+    z-index: 9999;
+
+    transition:
+        transform 0.15s ease,
+        opacity 0.2s ease;
+}
+
+#nobtn:hover {
+    background: rgba(107, 24, 58, 0.08);
+    color: var(--berry);
+}
+
+#nobtn:active {
+    transform: scale(0.85);
+}
+
+/* =========================================
+   Date / Time Inputs
+   ========================================= */
+
+input[type="date"],
+input[type="time"] {
     width: 100%;
+    max-width: 190px;
+
+    min-height: 50px;
+
+    padding: 12px 14px;
+
+    border: 2px solid var(--sage);
+    border-radius: 14px;
+
+    background: #ffffff;
+    color: var(--dark);
+
+    font-family: inherit;
+    font-size: 15px;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
 }
 
-.food-grid button {
+input[type="date"]:focus,
+input[type="time"]:focus {
+    border-color: var(--pink);
+
+    box-shadow:
+        0 0 0 4px rgba(217, 143, 168, 0.15);
+
+    transform: translateY(-2px);
+}
+
+/* =========================================
+   Fix Meeting Button
+   ========================================= */
+
+#fix {
+    width: 100%;
+    margin-top: 12px;
+}
+
+/* =========================================
+   Food Buttons
+   ========================================= */
+
+.food button {
+    width: 100%;
+    min-width: 0;
+
+    min-height: 65px;
+
     margin: 0;
-    padding: 15px 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    border-radius: 16px;
+
+    border-radius: 18px;
 }
 
-/* JavaScript Utility Classes */
+/* =========================================
+   Hidden Elements
+   ========================================= */
+
 .hidden {
     display: none !important;
 }
 
-.screen {
+/* =========================================
+   Screen Animation
+   ========================================= */
+
+.show-screen {
     width: 100%;
-    display: flex;
+
+    display: flex !important;
     flex-direction: column;
     align-items: center;
+
+    animation: screenIn 0.45s ease both;
 }
-img{
-    width: 50%;
-    height: auto;
-    border-radius: 16px;
+
+@keyframes screenIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================================
+   Final Screen
+   ========================================= */
+
+.final-screen-active h1 {
+    margin-bottom: 12px;
+}
+
+.final-screen-active p {
+    font-size: 17px;
+}
+
+/* =========================================
+   NO Rain
+   ========================================= */
+
+.no-rain {
+    position: fixed;
+
+    pointer-events: none;
+    user-select: none;
+
+    z-index: 99999;
+}
+
+/* =========================================
+   Mobile
+   ========================================= */
+
+@media (max-width: 480px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .card-container {
+        width: 100%;
+        min-height: 470px;
+
+        padding: 28px 18px;
+
+        border-radius: 24px;
+    }
+
+    .img img {
+        width: min(155px, 48vw);
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    button {
+        min-width: 100px;
+
+        padding: 12px 18px;
+
+        font-size: 15px;
+    }
+
+    .food {
+        gap: 10px;
+    }
+
+    .food button {
+        min-height: 58px;
+    }
+
+    input[type="date"],
+    input[type="time"] {
+        max-width: none;
+    }
+}
+
+/* =========================================
+   Very Small Phones
+   ========================================= */
+
+@media (max-width: 350px) {
+
+    .card-container {
+        padding: 24px 14px;
+    }
+
+    .food {
+        grid-template-columns: 1fr;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+}
+
+/* =========================================
+   Reduced Motion
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
