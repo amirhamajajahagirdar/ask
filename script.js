@@ -1,101 +1,119 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    /* =========================================
-       MAIN ELEMENTS
-    ========================================= */
+    const card = document.querySelector(".card-container");
 
-    const imageSection =
-        document.querySelector(".img");
+    const imageSection = document.querySelector(".img");
+    const mainQuestion = card.querySelector(":scope > h1");
+    const yesNoContainer = document.querySelector(".scontainer");
 
-    const mainQuestion =
-        document.querySelector(".card-container > h1");
+    const yesBtn = document.getElementById("yesbtn");
+    const noBtn = document.getElementById("nobtn");
+    const okBtn = document.getElementById("okbtn");
 
-    const yesNoContainer =
-        document.querySelector(".scontainer");
-
-    const yesBtn =
-        document.getElementById("yesbtn");
-
-    const noBtn =
-        document.getElementById("nobtn");
-
-    const okBtn =
-        document.getElementById("okbtn");
-
-
-    /* =========================================
-       DATE ELEMENTS
-    ========================================= */
-
-    const dateScreen =
-        document.querySelector(".date");
-
-    const dateInput =
-        document.getElementById("dateInput");
-
-    const timeInput =
-        document.getElementById("timeInput");
-
-    const fixBtn =
-        document.getElementById("fix");
-
-
-    /* =========================================
-       SCREEN STRUCTURE
-
-       hiddenScreens[0] = YES confirmation
-       hiddenScreens[1] = FOOD
-       hiddenScreens[2] = FINAL
-    ========================================= */
+    const dateScreen = document.querySelector(".date");
+    const dateInput = document.getElementById("dateInput");
+    const timeInput = document.getElementById("timeInput");
+    const fixBtn = document.getElementById("fix");
 
     const hiddenScreens =
-        document.querySelectorAll(
-            ".card-container > .hidden"
-        );
+        card.querySelectorAll(":scope > .hidden");
 
-    const yesScreen =
-        hiddenScreens[0];
-
-    const foodScreen =
-        hiddenScreens[1];
-
-    const finalScreen =
-        hiddenScreens[2];
+    const yesScreen = hiddenScreens[0];
+    const foodScreen = hiddenScreens[1];
+    const finalScreen = hiddenScreens[2];
 
 
     /* =========================================
-       SCREEN MANAGEMENT
+       MAKE DATE SCREEN A REAL SCREEN
+    ========================================= */
+
+    dateScreen.classList.add("date-screen");
+
+
+    /* =========================================
+       SCREEN 5
+    ========================================= */
+
+    const validationScreen =
+        document.createElement("div");
+
+    validationScreen.className =
+        "hidden dynamic-validation-screen";
+
+    validationScreen.innerHTML = `
+        <h1>Are you sure? ❤️</h1>
+
+        <p id="selectedFoodText"></p>
+
+        <div class="validation-buttons">
+
+            <button id="confirmFood" type="button">
+                Yes, confirm ❤️
+            </button>
+
+            <button id="changeFood" type="button">
+                Change
+            </button>
+
+        </div>
+    `;
+
+    card.appendChild(validationScreen);
+
+
+    const selectedFoodText =
+        validationScreen.querySelector(
+            "#selectedFoodText"
+        );
+
+    const confirmFood =
+        validationScreen.querySelector(
+            "#confirmFood"
+        );
+
+    const changeFood =
+        validationScreen.querySelector(
+            "#changeFood"
+        );
+
+
+    /* =========================================
+       HIDE EVERYTHING
     ========================================= */
 
     function hideAllScreens() {
 
-        if (imageSection) {
-            imageSection.classList.add("hidden");
-        }
+        // Screen 1
+        imageSection?.classList.add("hidden");
+        mainQuestion?.classList.add("hidden");
+        yesNoContainer?.classList.add("hidden");
 
-        if (mainQuestion) {
-            mainQuestion.classList.add("hidden");
-        }
 
-        if (yesNoContainer) {
-            yesNoContainer.classList.add("hidden");
-        }
+        // Screen 3 — DATE
+        dateScreen?.classList.add("hidden");
+        dateScreen?.classList.remove("show-screen");
 
-        if (dateScreen) {
-            dateScreen.classList.add("hidden");
-        }
 
+        // Original hidden screens
         hiddenScreens.forEach(screen => {
 
             screen.classList.add("hidden");
-
-            screen.classList.remove(
-                "show-screen"
-            );
+            screen.classList.remove("show-screen");
 
         });
+
+
+        // Screen 5
+        validationScreen.classList.add("hidden");
+        validationScreen.classList.remove(
+            "show-screen"
+        );
     }
 
+
+    /* =========================================
+       SHOW SCREEN
+    ========================================= */
 
     function showScreen(screen) {
 
@@ -107,41 +125,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
         void screen.offsetWidth;
 
-        screen.classList.add(
-            "show-screen"
-        );
+        screen.classList.add("show-screen");
     }
 
 
     /* =========================================
-       INITIAL STATE
+       INITIAL SCREEN
     ========================================= */
 
-    if (dateScreen) {
-        dateScreen.classList.add("hidden");
-    }
+    hideAllScreens();
 
-    hiddenScreens.forEach(screen => {
-        screen.classList.add("hidden");
+    imageSection.classList.remove("hidden");
+    mainQuestion.classList.remove("hidden");
+    yesNoContainer.classList.remove("hidden");
+
+
+    /* =========================================
+       YES
+       SCREEN 1 → SCREEN 2
+    ========================================= */
+
+    yesBtn?.addEventListener("click", () => {
+
+        showScreen(yesScreen);
+
     });
-
-
-    /* =========================================
-       YES BUTTON
-    ========================================= */
-
-    if (yesBtn) {
-
-        yesBtn.addEventListener(
-            "click",
-            () => {
-
-                showScreen(yesScreen);
-
-            }
-        );
-
-    }
 
 
     /* =========================================
@@ -150,242 +158,186 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let noAttempts = 0;
 
-    if (noBtn) {
+    noBtn?.addEventListener("click", event => {
 
-        noBtn.addEventListener(
-            "click",
-            event => {
+        event.preventDefault();
 
-                event.preventDefault();
+        noAttempts++;
 
-                noAttempts++;
-
-                createNoRain();
+        createNoRain();
 
 
-                /* ---------------------------------
-                   CURRENT POSITION
-                --------------------------------- */
-
-                const rect =
-                    noBtn.getBoundingClientRect();
+        const rect =
+            noBtn.getBoundingClientRect();
 
 
-                /* ---------------------------------
-                   FIXED POSITION
-                --------------------------------- */
+        noBtn.style.position = "fixed";
 
-                noBtn.style.position =
-                    "fixed";
+        noBtn.style.left =
+            `${rect.left}px`;
 
-                noBtn.style.left =
-                    `${rect.left}px`;
+        noBtn.style.top =
+            `${rect.top}px`;
 
-                noBtn.style.top =
-                    `${rect.top}px`;
-
-                noBtn.style.right =
-                    "auto";
-
-                noBtn.style.bottom =
-                    "auto";
-
-                noBtn.style.zIndex =
-                    "99999";
+        noBtn.style.right = "auto";
+        noBtn.style.bottom = "auto";
+        noBtn.style.zIndex = "99999";
 
 
-                /* ---------------------------------
-                   RANDOM X / Y MOVEMENT
-                --------------------------------- */
-
-                const movement =
-                    150 +
-                    Math.random() * 180;
+        const movement =
+            150 + Math.random() * 180;
 
 
-                let moveX =
-                    (Math.random() * 2 - 1) *
-                    movement;
+        let moveX =
+            (Math.random() * 2 - 1) *
+            movement;
 
-                let moveY =
-                    (Math.random() * 2 - 1) *
-                    movement;
+        let moveY =
+            (Math.random() * 2 - 1) *
+            movement;
 
 
-                /* Sometimes mostly horizontal,
-                   sometimes mostly vertical */
+        if (Math.random() < 0.5) {
+            moveY *= 0.35;
+        } else {
+            moveX *= 0.35;
+        }
 
-                if (Math.random() < 0.5) {
 
-                    moveY *= 0.35;
+        const margin = 15;
 
-                } else {
 
-                    moveX *= 0.35;
+        const maxX =
+            Math.max(
+                margin,
+                window.innerWidth -
+                rect.width -
+                margin
+            );
 
+
+        const maxY =
+            Math.max(
+                margin,
+                window.innerHeight -
+                rect.height -
+                margin
+            );
+
+
+        let finalX =
+            Math.max(
+                margin,
+                Math.min(
+                    rect.left + moveX,
+                    maxX
+                )
+            );
+
+
+        let finalY =
+            Math.max(
+                margin,
+                Math.min(
+                    rect.top + moveY,
+                    maxY
+                )
+            );
+
+
+        const translateX =
+            finalX - rect.left;
+
+        const translateY =
+            finalY - rect.top;
+
+
+        const animation =
+            noBtn.animate(
+                [
+                    {
+                        transform:
+                            "translate(0,0) rotate(0deg)"
+                    },
+                    {
+                        transform:
+                            `translate(${translateX}px,${translateY}px)
+                             rotate(${Math.random() * 20 - 10}deg)
+                             scale(1.08)`
+                    }
+                ],
+                {
+                    duration: 450,
+                    easing:
+                        "cubic-bezier(.2,.8,.2,1)",
+                    fill: "forwards"
                 }
+            );
 
 
-                /* ---------------------------------
-                   KEEP INSIDE SCREEN
-                --------------------------------- */
+        animation.finished.then(() => {
 
-                const margin = 15;
+            noBtn.style.left =
+                `${finalX}px`;
 
-                const maxX =
-                    window.innerWidth -
-                    rect.width -
-                    margin;
+            noBtn.style.top =
+                `${finalY}px`;
 
-                const maxY =
-                    window.innerHeight -
-                    rect.height -
-                    margin;
+            noBtn.style.transform =
+                "none";
+
+        });
 
 
-                let finalX =
-                    rect.left + moveX;
+        /* After 5 NOs */
 
-                let finalY =
-                    rect.top + moveY;
+        if (noAttempts >= 5) {
 
+            setTimeout(() => {
 
-                finalX =
-                    Math.max(
-                        margin,
-                        Math.min(
-                            finalX,
-                            maxX
-                        )
-                    );
+                mainQuestion.textContent =
+                    "You have to say YES 😂❤️";
 
+                mainQuestion.classList.remove(
+                    "hidden"
+                );
 
-                finalY =
-                    Math.max(
-                        margin,
-                        Math.min(
-                            finalY,
-                            maxY
-                        )
-                    );
+                noBtn.style.display =
+                    "none";
 
 
-                const translateX =
-                    finalX - rect.left;
-
-                const translateY =
-                    finalY - rect.top;
+                yesNoContainer.classList.remove(
+                    "hidden"
+                );
 
 
-                /* ---------------------------------
-                   RUNNING ANIMATION
-                --------------------------------- */
-
-                const animation =
-                    noBtn.animate(
-                        [
-                            {
-                                transform:
-                                    "translate(0,0) rotate(0deg) scale(1)"
-                            },
-
-                            {
-                                transform:
-                                    `translate(${translateX}px,${translateY}px) rotate(${Math.random() * 20 - 10}deg) scale(1.08)`
-                            }
-                        ],
-                        {
-                            duration: 450,
-
-                            easing:
-                                "cubic-bezier(.2,.8,.2,1)",
-
-                            fill: "forwards"
-                        }
-                    );
+                yesNoContainer.innerHTML = `
+                    <button
+                        id="yesbtn"
+                        type="button"
+                    >
+                        YES ❤️
+                    </button>
+                `;
 
 
-                animation.finished.then(() => {
+                document
+                    .getElementById("yesbtn")
+                    ?.addEventListener(
+                        "click",
+                        () => {
 
-                    noBtn.style.left =
-                        `${finalX}px`;
-
-                    noBtn.style.top =
-                        `${finalY}px`;
-
-                    noBtn.style.transform =
-                        "none";
-
-                });
-
-
-                /* =================================
-                   AFTER 5 NO CLICKS
-                ================================= */
-
-                if (noAttempts >= 5) {
-
-                    setTimeout(() => {
-
-                        if (mainQuestion) {
-
-                            mainQuestion.textContent =
-                                "You have to say YES 😂❤️";
-
-                            mainQuestion.classList.remove(
-                                "hidden"
+                            showScreen(
+                                yesScreen
                             );
 
                         }
+                    );
 
+            }, 500);
+        }
 
-                        noBtn.style.display =
-                            "none";
-
-
-                        if (yesNoContainer) {
-
-                            yesNoContainer.classList.remove(
-                                "hidden"
-                            );
-
-                            yesNoContainer.innerHTML = `
-                                <button
-                                    id="yesbtn"
-                                    type="button"
-                                >
-                                    YES ❤️
-                                </button>
-                            `;
-
-
-                            const newYesBtn =
-                                document.getElementById(
-                                    "yesbtn"
-                                );
-
-
-                            newYesBtn.addEventListener(
-                                "click",
-                                () => {
-
-                                    showScreen(
-                                        yesScreen
-                                    );
-
-                                }
-                            );
-
-                        }
-
-                    }, 500);
-
-                }
-
-            }
-        );
-
-    }
+    });
 
 
     /* =========================================
@@ -459,9 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 "#9e3f63";
 
 
-            document.body.appendChild(
-                drop
-            );
+            document.body.appendChild(drop);
 
 
             const animation =
@@ -470,14 +420,12 @@ document.addEventListener("DOMContentLoaded", () => {
                         {
                             transform:
                                 "translateY(0) rotate(-10deg)",
-
                             opacity: 1
                         },
-
                         {
                             transform:
-                                `translateY(${window.innerHeight + 150}px) rotate(180deg)`,
-
+                                `translateY(${window.innerHeight + 150}px)
+                                 rotate(180deg)`,
                             opacity: 0.1
                         }
                     ],
@@ -485,7 +433,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         duration:
                             1200 +
                             Math.random() * 1800,
-
                         easing:
                             "cubic-bezier(.2,.7,.4,1)"
                     }
@@ -502,83 +449,45 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================
-       OK BUTTON
-
-       YES SCREEN
-       ↓
-       DATE SCREEN
+       SCREEN 2 → SCREEN 3
+       OK
     ========================================= */
 
-    if (okBtn) {
+    okBtn?.addEventListener("click", () => {
 
-        okBtn.addEventListener(
-            "click",
-            () => {
+        showScreen(dateScreen);
 
-                showScreen(
-                    dateScreen
-                );
-
-            }
-        );
-
-    }
+    });
 
 
     /* =========================================
+       SCREEN 3 → SCREEN 4
        FIX MEETING
-
-       DATE SCREEN
-       ↓
-       FOOD SCREEN
     ========================================= */
 
-    if (fixBtn) {
+    fixBtn?.addEventListener("click", () => {
 
-        fixBtn.addEventListener(
-            "click",
-            () => {
+        if (!dateInput.value) {
 
-                /* Check date */
+            dateInput.focus();
+            shake(dateInput);
 
-                if (!dateInput.value) {
-
-                    dateInput.focus();
-
-                    shake(dateInput);
-
-                    return;
-
-                }
+            return;
+        }
 
 
-                /* Check time */
+        if (!timeInput.value) {
 
-                if (!timeInput.value) {
+            timeInput.focus();
+            shake(timeInput);
 
-                    timeInput.focus();
-
-                    shake(timeInput);
-
-                    return;
-
-                }
+            return;
+        }
 
 
-                /* ---------------------------------
-                   DATE IS VALID
+        showScreen(foodScreen);
 
-                   Show FOOD screen
-                --------------------------------- */
-
-                showScreen(
-                    foodScreen
-                );
-
-            }
-        );
-
-    }
+    });
 
 
     /* =========================================
@@ -587,39 +496,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function shake(element) {
 
-        if (!element) return;
-
         element.animate(
             [
-                {
-                    transform:
-                        "translateX(0)"
-                },
-
-                {
-                    transform:
-                        "translateX(-6px)"
-                },
-
-                {
-                    transform:
-                        "translateX(6px)"
-                },
-
-                {
-                    transform:
-                        "translateX(-4px)"
-                },
-
-                {
-                    transform:
-                        "translateX(4px)"
-                },
-
-                {
-                    transform:
-                        "translateX(0)"
-                }
+                { transform: "translateX(0)" },
+                { transform: "translateX(-6px)" },
+                { transform: "translateX(6px)" },
+                { transform: "translateX(-4px)" },
+                { transform: "translateX(4px)" },
+                { transform: "translateX(0)" }
             ],
             {
                 duration: 300
@@ -630,265 +514,117 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =========================================
-       FOOD SELECTION
-
-       FOOD
-       ↓
-       VALIDATION
-       ↓
-       FINAL MESSAGE
+       FOOD → SCREEN 5
     ========================================= */
 
     function selectFood(foodName) {
 
-        if (!foodScreen) return;
+        selectedFoodText.textContent =
+            `You chose ${foodName}. Are you sure?`;
 
+        validationScreen.dataset.food =
+            foodName;
 
-        /* ---------------------------------
-           Remove old validation if one exists
-        --------------------------------- */
-
-        const oldValidation =
-            foodScreen.querySelector(
-                ".food-validation"
-            );
-
-        if (oldValidation) {
-            oldValidation.remove();
-        }
-
-
-        /* ---------------------------------
-           Create validation box
-        --------------------------------- */
-
-        const validation =
-            document.createElement("div");
-
-        validation.className =
-            "food-validation";
-
-
-        validation.innerHTML = `
-            <h2>Are you sure? ❤️</h2>
-
-            <p>
-                You chose
-                <strong>${foodName}</strong>.
-            </p>
-
-            <div class="validation-buttons">
-
-                <button
-                    type="button"
-                    id="confirmFood"
-                >
-                    Yes, confirm ❤️
-                </button>
-
-                <button
-                    type="button"
-                    id="changeFood"
-                >
-                    Change
-                </button>
-
-            </div>
-        `;
-
-
-        foodScreen.appendChild(
-            validation
-        );
-
-
-        /* ---------------------------------
-           CONFIRM FOOD
-        --------------------------------- */
-
-        const confirmFood =
-            validation.querySelector(
-                "#confirmFood"
-            );
-
-
-        confirmFood.addEventListener(
-            "click",
-            () => {
-
-                showFinalMessage(
-                    foodName
-                );
-
-            }
-        );
-
-
-        /* ---------------------------------
-           CHANGE FOOD
-        --------------------------------- */
-
-        const changeFood =
-            validation.querySelector(
-                "#changeFood"
-            );
-
-
-        changeFood.addEventListener(
-            "click",
-            () => {
-
-                validation.remove();
-
-            }
-        );
-
-
-        /* ---------------------------------
-           Small entrance animation
-        --------------------------------- */
-
-        validation.animate(
-            [
-                {
-                    opacity: 0,
-                    transform:
-                        "translateY(15px) scale(.95)"
-                },
-
-                {
-                    opacity: 1,
-                    transform:
-                        "translateY(0) scale(1)"
-                }
-            ],
-            {
-                duration: 350,
-                easing: "ease-out",
-                fill: "forwards"
-            }
+        showScreen(
+            validationScreen
         );
 
     }
 
 
     /* =========================================
-       FINAL MESSAGE
-
-       After validation:
-       "I'll go there ❤️"
+       SCREEN 5 → SCREEN 6
     ========================================= */
 
-    function showFinalMessage(foodName) {
+    confirmFood.addEventListener(
+        "click",
+        () => {
 
-        if (!finalScreen) return;
-
-
-        const heading =
-            finalScreen.querySelector("h1");
-
-        const paragraph =
-            finalScreen.querySelector("p");
+            const foodName =
+                validationScreen.dataset.food ||
+                "food";
 
 
-        if (heading) {
+            const heading =
+                finalScreen.querySelector("h1");
 
-            heading.textContent =
-                "It's confirmed! ❤️";
+            const paragraph =
+                finalScreen.querySelector("p");
+
+
+            if (heading) {
+
+                heading.textContent =
+                    "It's confirmed! ❤️";
+
+            }
+
+
+            if (paragraph) {
+
+                paragraph.textContent =
+                    `I'll go there for ${foodName}! 😋❤️`;
+
+            }
+
+
+            showScreen(
+                finalScreen
+            );
 
         }
+    );
 
 
-        if (paragraph) {
+    /* =========================================
+       CHANGE FOOD
+    ========================================= */
 
-            paragraph.textContent =
-                `I'll go there for ${foodName}! 😋❤️`;
+    changeFood.addEventListener(
+        "click",
+        () => {
+
+            showScreen(
+                foodScreen
+            );
 
         }
-
-
-        finalScreen.classList.add(
-            "final-screen-active"
-        );
-
-
-        showScreen(
-            finalScreen
-        );
-
-    }
+    );
 
 
     /* =========================================
        FOOD BUTTONS
     ========================================= */
 
-    const pizza =
-        document.getElementById("pizza");
-
-    const burger =
-        document.getElementById("burger");
-
-    const pasta =
-        document.getElementById("pasta");
-
-    const sushi =
-        document.getElementById("sushi");
-
-
-    if (pizza) {
-
-        pizza.addEventListener(
+    document
+        .getElementById("pizza")
+        ?.addEventListener(
             "click",
-            () => {
-
-                selectFood("Pizza");
-
-            }
+            () => selectFood("Pizza")
         );
 
-    }
 
-
-    if (burger) {
-
-        burger.addEventListener(
+    document
+        .getElementById("burger")
+        ?.addEventListener(
             "click",
-            () => {
-
-                selectFood("Burger");
-
-            }
+            () => selectFood("Burger")
         );
 
-    }
 
-
-    if (pasta) {
-
-        pasta.addEventListener(
+    document
+        .getElementById("pasta")
+        ?.addEventListener(
             "click",
-            () => {
-
-                selectFood("Pasta");
-
-            }
+            () => selectFood("Pasta")
         );
 
-    }
 
-
-    if (sushi) {
-
-        sushi.addEventListener(
+    document
+        .getElementById("sushi")
+        ?.addEventListener(
             "click",
-            () => {
-
-                selectFood("Sushi");
-
-            }
+            () => selectFood("Sushi")
         );
-
-    }
 
 });
