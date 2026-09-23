@@ -1,0 +1,126 @@
+/* Global Reset and Background */
+body {
+    background-color: #E4DEE4; /* Dusty Lavender */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Main Card Container */
+.card-container {
+    background-color: #F7F3F4; /* Warm Off-White */
+    padding: 40px;
+    border-radius: 22px;
+    box-shadow: 0 10px 30px rgba(142, 137, 140, 0.3); /* Soft Gray shadow */
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Typography */
+h1 {
+    color: #6B183A; /* Deep Berry */
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #211A1D; /* Near Black */
+    font-size: 16px;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+/* Profile Image */
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 16px;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 3px solid #DCE8E1; /* Soft Sage / Mint */
+}
+
+/* Standard Buttons */
+button {
+    background-color: #D98FA8; /* Blush Pink */
+    color: #F7F3F4; /* Warm Off-White */
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #9E3F63; /* Rose Accent */
+}
+
+/* Runaway Button Specifics */
+#no-btn {
+    position: relative; 
+    transition: top 0.2s ease, left 0.2s ease; /* Smooth gliding */
+}
+
+/* Inputs for Screen 3 */
+input[type="date"], input[type="time"] {
+    border: 2px solid #DCE8E1; /* Soft Sage / Mint */
+    background-color: #FFFFFF;
+    color: #211A1D;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 12px;
+    margin: 10px 5px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input[type="date"]:focus, input[type="time"]:focus {
+    border-color: #D98FA8; /* Blush Pink focus state */
+}
+
+/* Food Grid Layout */
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.food-grid button {
+    margin: 0;
+    padding: 15px 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    border-radius: 16px;
+}
+
+/* JavaScript Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.screen {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
